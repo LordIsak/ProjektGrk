@@ -25,15 +25,14 @@ Core::Shader_Loader shaderLoader;
 obj::Model submarineModel;
 obj::Model backgroundModel;
 obj::Model fishModel, fishModel_2;
-obj::Model rockModel;
-obj::Model coral;
+obj::Model rockModel, rockModel_2;
+obj::Model coralModel;
 obj::Model turtleModel;
 obj::Model sharkModel;
 
 
 glm::vec3 fishPosition[NUMBER_FISHES];
 float rot_tab[NUMBER_FISHES];
-glm::vec3 rocks[NUMBER_ROCKS];
 
 float cameraAngle = 0;
 glm::vec3 cameraPos = glm::vec3(-5, 0, 0);
@@ -188,6 +187,14 @@ void renderScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+	// mg³a
+	GLfloat fogColor[] = {0.0f, 0.0f, 0.0f, 1};
+	glFogfv(GL_FOG_COLOR ,fogColor);
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogf(GL_FOG_START, 0.f);
+	glFogf(GL_FOG_END, 40.f);
+	//glFogf(GL_FOG_DENSITY, 1.f);
+
 	// Zmienna "time"  zawiera liczbe sekund od uruchomienia programu
 	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f; //-loadingTime;
 
@@ -236,14 +243,17 @@ void renderScene()
 		}
 	}
 
-	/*for (int i = 0; i < NUMBER_ROCKS; i++) {
-		drawObjectTexture(&rockModel, glm::translate(rocks[i]) * glm::scale(glm::vec3(0.1f)), textureRock);
-	}*/
-
 
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(3, 20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(10.f, -20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
-	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, 10.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.02f)), textureShark);
+	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, -50.f, 2)) * glm::translate(glm::vec3(0, sin(time) * 0.5, cos(time) * 45.f)) * rotation
+		* glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.09f)), textureShark);
+
+	drawObjectTexture(&coralModel, glm::translate(glm::vec3(0.f, -100.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.1f)), textureCoral);
+	drawObjectTexture(&rockModel, glm::translate(glm::vec3(50.f, -80.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
+	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -85.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
+	drawObjectTexture(&rockModel, glm::translate(glm::vec3(30.f, -85.f, 20.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
+	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -83.f, -35.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 
 
 	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
@@ -267,16 +277,19 @@ void init()
 	fishModel_2 = obj::loadModelFromFile("models/fish2.obj");
 	turtleModel = obj::loadModelFromFile("models/turtle.obj");
 	sharkModel = obj::loadModelFromFile("models/shark.obj");
-	//rockModel = obj::loadModelFromFile("models/rock.obj");
+	coralModel = obj::loadModelFromFile("models/coral.obj");
+	rockModel = obj::loadModelFromFile("models/stone.obj");
+	rockModel_2 = obj::loadModelFromFile("models/stone2.obj");
 
-	textureSubmarine = Core::LoadTexture("textures/s.png");
+	textureSubmarine = Core::LoadTexture("textures/s2.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
 	textureFish = Core::LoadTexture("textures/fish.png");
 	textureFish_2 = Core::LoadTexture("textures/fish2.png");
 	textureFish_3 = Core::LoadTexture("textures/fish3.png");
 	textureTurtle = Core::LoadTexture("textures/turtle.png");
 	textureShark = Core::LoadTexture("textures/shark.png");
-	//textureRock = Core::LoadTexture("textures/rock.png");
+	textureCoral = Core::LoadTexture("textures/coral.png");
+	textureRock = Core::LoadTexture("textures/stone.png");
 
 
 	for (int i = 0; i < NUMBER_FISHES; i++) {
