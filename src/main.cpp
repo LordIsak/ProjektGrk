@@ -12,7 +12,7 @@
 #include "Texture.h"
 
 float frustumScale = 1.0f;
-float loadingTime;
+//float loadingTime;
 static const int NUMBER_FISHES = 30;
 
 GLuint programColor;
@@ -28,7 +28,9 @@ obj::Model rock;
 obj::Model coral;
 obj::Model sharkModel;
 
+
 glm::vec3 fishPosition[NUMBER_FISHES];
+float rot_tab[NUMBER_FISHES];
 
 float cameraAngle = 0;
 glm::vec3 cameraPos = glm::vec3(-5, 0, 0);
@@ -180,22 +182,57 @@ void renderScene()
 	perspectiveMatrix = Core::createPerspectiveMatrix(0.1, 1000, frustumScale);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glClearColor(0.0f, 0.3f, 0.3f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
 	// Zmienna "time"  zawiera liczbe sekund od uruchomienia programu
-	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f - loadingTime;
+	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f; //-loadingTime;
 
 
 	glm::mat4 attachShip = glm::mat4_cast(inverse(rotation));
 
-	glm::mat4 shipInitialTransformation = glm::translate(glm::vec3(0, -0.25f, 0)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, 1, -1)) * glm::scale(glm::vec3(0.0001f));
+	glm::mat4 shipInitialTransformation = glm::translate(glm::vec3(0, -0.25f, 0)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, 1, -1)) * glm::scale(glm::vec3(0.000115f));
 	glm::mat4 submarineModelMatrix = glm::translate(cameraPos + cameraDir * 1.5f) * attachShip * shipInitialTransformation;
 	submarineModelMatrix *= glm::rotate(sin(cameraPos[0] + cameraPos[1] + cameraPos[2] + cameraAngle) / 8, glm::vec3(0, 1, 0));
 	drawObjectTexture(&submarineModel, submarineModelMatrix, textureSubmarine);
 	
+
+	glm::mat4 rotationFishMatrix[NUMBER_FISHES];
+	// dla ruchu po okregach
+	glm::mat4 rotation_round[NUMBER_FISHES];
+	// dla ruchu lewo-prawo
+	glm::mat4 rotation;
+
+	// dla ruchu po okregach
 	for (int i = 0; i < NUMBER_FISHES; i++) {
-		drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * glm::scale(glm::vec3(0.2f)), textureFish);
+		rotation_round[i][0][2] = cos(rot_tab[i] * time);
+		rotation_round[i][2][0] = sin(rot_tab[i] * time);
+		rotation_round[i][0][2] = -sin(rot_tab[i] * time);
+		rotation_round[i][2][2] = cos(rot_tab[i] * time);
 	}
+
+	//dla ruchu lewo-prawo
+	rotation[0][0] = cos(time);
+	rotation[2][0] = sin(time);
+	rotation[0][2] = -sin(time);
+	rotation[2][2] = cos(time);
+
+	for (int i = 0; i < NUMBER_FISHES; i++) {
+		
+		if (i % 3 == 0) {
+			drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.2f)), textureFish);
+		}
+
+		else if(i % 3 == 1) {
+			drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * glm::translate(glm::vec3(-cos(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.2f)), textureFish);
+		}
+
+		else {
+			rotationFishMatrix[i][3][0] = (10 + i) * sin(rot_tab[i] * time);
+			rotationFishMatrix[i][3][2] = (10 + i) * cos(rot_tab[i] * time);
+			drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * rotationFishMatrix[i] * rotation_round[i] * glm::scale(glm::vec3(0.2f)), textureFish);
+		}
+	}
+
 
 	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(3, -2, 2)) * glm::scale(glm::vec3(0.005f)), textureShark);
 
@@ -226,10 +263,14 @@ void init()
 
 
 	for (int i = 0; i < NUMBER_FISHES; i++) {
-		fishPosition[i] = glm::vec3(glm::sphericalRand(35.0f));
+		fishPosition[i] = glm::sphericalRand(30.f);
+		//fishPosition[i] = glm::vec3(rand() % 20 - 10, rand() % 10 - 5, rand() % 20 - 10);
+		//rot_tab[i] = ((float)rand() / (float)(RAND_MAX)) * 2.0;
+		rot_tab[i] = 0.05 + (rand() / (RAND_MAX / (1.0 - 0.05)));
 	}
 
-	loadingTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
+
+	//loadingTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 }
 
 void shutdown()
@@ -248,11 +289,7 @@ void idle()
 
 void onReshape(int width, int height)
 {
-	// Kiedy rozmiar okna sie zmieni, obraz jest znieksztalcony.
-	// Dostosuj odpowiednio macierz perspektywy i viewport.
-	// Oblicz odpowiednio globalna zmienna "frustumScale".
-	// Ustaw odpowiednio viewport - zobacz:
-	// https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glViewport.xhtml
+	// Elminacja niezkszta³cenia obrazu przy zmianie wielkosci okna
 	frustumScale = (float)width / (float)height;
 	glViewport(0, 0, width, height);
 }

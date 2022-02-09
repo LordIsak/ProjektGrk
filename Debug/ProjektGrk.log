@@ -1,8 +1,9 @@
 ﻿  main.cpp
-C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(86,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(87,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(92,16): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(180,75): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(211,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(88,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(89,10): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(94,16): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(182,75): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(248,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Szogunek\Desktop\ProjektGrk\src\main.cpp(269,21): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 Camera.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
   ProjektGrk.vcxproj -> C:\Users\Szogunek\Desktop\ProjektGrk\Debug\ProjektGrk.exe
