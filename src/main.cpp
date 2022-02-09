@@ -14,6 +14,7 @@
 float frustumScale = 1.0f;
 //float loadingTime;
 static const int NUMBER_FISHES = 30;
+static const int NUMBER_ROCKS = 4;
 
 GLuint programColor;
 GLuint programTexture;
@@ -23,14 +24,16 @@ Core::Shader_Loader shaderLoader;
 
 obj::Model submarineModel;
 obj::Model backgroundModel;
-obj::Model fishModel;
-obj::Model rock;
+obj::Model fishModel, fishModel_2;
+obj::Model rockModel;
 obj::Model coral;
+obj::Model turtleModel;
 obj::Model sharkModel;
 
 
 glm::vec3 fishPosition[NUMBER_FISHES];
 float rot_tab[NUMBER_FISHES];
+glm::vec3 rocks[NUMBER_ROCKS];
 
 float cameraAngle = 0;
 glm::vec3 cameraPos = glm::vec3(-5, 0, 0);
@@ -50,9 +53,10 @@ glm::vec3 lightDir = glm::normalize(glm::vec3(1.0f, -0.9f, -1.0f));
 
 GLuint textureSubmarine;
 GLuint textureBackground;
-GLuint textureFish;
+GLuint textureFish, textureFish_2, textureFish_3;
 GLuint textureCoral;
 GLuint textureRock;
+GLuint textureTurtle;
 GLuint textureShark;
 
 glm::quat rotation = glm::quat(1, 0, 0, 0);
@@ -195,7 +199,6 @@ void renderScene()
 	submarineModelMatrix *= glm::rotate(sin(cameraPos[0] + cameraPos[1] + cameraPos[2] + cameraAngle) / 8, glm::vec3(0, 1, 0));
 	drawObjectTexture(&submarineModel, submarineModelMatrix, textureSubmarine);
 	
-
 	glm::mat4 rotationFishMatrix[NUMBER_FISHES];
 	// dla ruchu po okregach
 	glm::mat4 rotation_round[NUMBER_FISHES];
@@ -223,18 +226,25 @@ void renderScene()
 		}
 
 		else if(i % 3 == 1) {
-			drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * glm::translate(glm::vec3(-cos(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.2f)), textureFish);
+			drawObjectTexture(&fishModel_2, glm::translate(fishPosition[i]) * glm::translate(glm::vec3(-cos(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.2f)), textureFish_2);
 		}
 
 		else {
 			rotationFishMatrix[i][3][0] = (10 + i) * sin(rot_tab[i] * time);
 			rotationFishMatrix[i][3][2] = (10 + i) * cos(rot_tab[i] * time);
-			drawObjectTexture(&fishModel, glm::translate(fishPosition[i]) * rotationFishMatrix[i] * rotation_round[i] * glm::scale(glm::vec3(0.2f)), textureFish);
+			drawObjectTexture(&fishModel_2, glm::translate(fishPosition[i]) * rotationFishMatrix[i] * rotation_round[i] * glm::scale(glm::vec3(0.2f)), textureFish_3);
 		}
 	}
 
+	/*for (int i = 0; i < NUMBER_ROCKS; i++) {
+		drawObjectTexture(&rockModel, glm::translate(rocks[i]) * glm::scale(glm::vec3(0.1f)), textureRock);
+	}*/
 
-	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(3, -2, 2)) * glm::scale(glm::vec3(0.005f)), textureShark);
+
+	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(3, 20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
+	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(10.f, -20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
+	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, 10.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.02f)), textureShark);
+
 
 	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
 
@@ -254,12 +264,19 @@ void init()
 	submarineModel = obj::loadModelFromFile("models/submarine.obj");
 	backgroundModel = obj::loadModelFromFile("models/backg.obj");
 	fishModel = obj::loadModelFromFile("models/fish.obj");
+	fishModel_2 = obj::loadModelFromFile("models/fish2.obj");
+	turtleModel = obj::loadModelFromFile("models/turtle.obj");
 	sharkModel = obj::loadModelFromFile("models/shark.obj");
+	//rockModel = obj::loadModelFromFile("models/rock.obj");
 
 	textureSubmarine = Core::LoadTexture("textures/s.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
 	textureFish = Core::LoadTexture("textures/fish.png");
+	textureFish_2 = Core::LoadTexture("textures/fish2.png");
+	textureFish_3 = Core::LoadTexture("textures/fish3.png");
+	textureTurtle = Core::LoadTexture("textures/turtle.png");
 	textureShark = Core::LoadTexture("textures/shark.png");
+	//textureRock = Core::LoadTexture("textures/rock.png");
 
 
 	for (int i = 0; i < NUMBER_FISHES; i++) {
@@ -268,7 +285,6 @@ void init()
 		//rot_tab[i] = ((float)rand() / (float)(RAND_MAX)) * 2.0;
 		rot_tab[i] = 0.05 + (rand() / (RAND_MAX / (1.0 - 0.05)));
 	}
-
 
 	//loadingTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 }
