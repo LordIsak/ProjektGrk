@@ -11,6 +11,8 @@
 #include "Camera.h"
 #include "Texture.h"
 
+
+
 float frustumScale = 1.0f;
 //float loadingTime;
 static const int NUMBER_FISHES = 30;
@@ -28,8 +30,10 @@ obj::Model fishModel, fishModel_2;
 obj::Model rockModel, rockModel_2;
 obj::Model coralModel;
 obj::Model turtleModel;
-obj::Model sharkModel;
-
+obj::Model turtleModel_2;
+//obj::Model sharkModel;
+obj::Model chestModel;
+obj::Model skeletonModel;
 
 glm::vec3 fishPosition[NUMBER_FISHES];
 float rot_tab[NUMBER_FISHES];
@@ -56,9 +60,14 @@ GLuint textureFish, textureFish_2, textureFish_3;
 GLuint textureCoral;
 GLuint textureRock;
 GLuint textureTurtle;
-GLuint textureShark;
+GLuint textureTurtle_2;
+//GLuint textureShark;
+GLuint textureChest;
+GLuint textureSkeleton;
+
 
 glm::quat rotation = glm::quat(1, 0, 0, 0);
+
 
 void keyboard(unsigned char key, int x, int y)
 {
@@ -187,14 +196,7 @@ void renderScene()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	// mg³a
-	GLfloat fogColor[] = {0.0f, 0.0f, 0.0f, 1};
-	glFogfv(GL_FOG_COLOR ,fogColor);
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogf(GL_FOG_START, 0.f);
-	glFogf(GL_FOG_END, 40.f);
-	//glFogf(GL_FOG_DENSITY, 1.f);
-
+	
 	// Zmienna "time"  zawiera liczbe sekund od uruchomienia programu
 	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f; //-loadingTime;
 
@@ -246,15 +248,19 @@ void renderScene()
 
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(3, 20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(10.f, -20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
-	drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, -50.f, 2)) * glm::translate(glm::vec3(0, sin(time) * 0.5, cos(time) * 45.f)) * rotation
-		* glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.09f)), textureShark);
-
+	
+	drawObjectTexture(&turtleModel_2, glm::translate(glm::vec3(10.f, -97.f, 0)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.3f)), textureTurtle_2);
+	//drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, -50.f, 2)) * glm::translate(glm::vec3(0, sin(time) * 0.5, cos(time) * 45.f)) * rotation
+		// * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.09f)), textureShark);
+		
 	drawObjectTexture(&coralModel, glm::translate(glm::vec3(0.f, -100.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.1f)), textureCoral);
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(50.f, -80.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -85.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(30.f, -85.f, 20.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -83.f, -35.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 
+	drawObjectTexture(&chestModel, glm::translate(glm::vec3(-35.f, -86.f, -35.f)) * glm::scale(glm::vec3(1.f)), textureChest);
+	drawObjectTexture(&skeletonModel, glm::translate(glm::vec3(-35.f, -88.f, -30.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1, 0.6f, 1)) * glm::scale(glm::vec3(5.f)), textureSkeleton);
 
 	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
 
@@ -270,16 +276,20 @@ void init()
 	programColor = shaderLoader.CreateProgram("shaders/shader_color.vert", "shaders/shader_color.frag");
 	programTexture = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
 	mainTexture = shaderLoader.CreateProgram("shaders/shader_tex1.vert", "shaders/shader_tex1.frag");
+	
 
 	submarineModel = obj::loadModelFromFile("models/submarine.obj");
 	backgroundModel = obj::loadModelFromFile("models/backg.obj");
 	fishModel = obj::loadModelFromFile("models/fish.obj");
 	fishModel_2 = obj::loadModelFromFile("models/fish2.obj");
 	turtleModel = obj::loadModelFromFile("models/turtle.obj");
-	sharkModel = obj::loadModelFromFile("models/shark.obj");
+	turtleModel_2 = obj::loadModelFromFile("models/turtle2.obj");
+	//sharkModel = obj::loadModelFromFile("models/shark.obj");
 	coralModel = obj::loadModelFromFile("models/coral.obj");
 	rockModel = obj::loadModelFromFile("models/stone.obj");
 	rockModel_2 = obj::loadModelFromFile("models/stone2.obj");
+	chestModel = obj::loadModelFromFile("models/chest.obj");
+	skeletonModel = obj::loadModelFromFile("models/skeleton.obj");
 
 	textureSubmarine = Core::LoadTexture("textures/s2.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
@@ -287,9 +297,12 @@ void init()
 	textureFish_2 = Core::LoadTexture("textures/fish2.png");
 	textureFish_3 = Core::LoadTexture("textures/fish3.png");
 	textureTurtle = Core::LoadTexture("textures/turtle.png");
-	textureShark = Core::LoadTexture("textures/shark.png");
+	textureTurtle_2 = Core::LoadTexture("textures/turtle2.png");
+	//textureShark = Core::LoadTexture("textures/shark.png");
 	textureCoral = Core::LoadTexture("textures/coral.png");
 	textureRock = Core::LoadTexture("textures/stone.png");
+	textureChest = Core::LoadTexture("textures/chest.png");
+	textureSkeleton = Core::LoadTexture("textures/skeleton.png");
 
 
 	for (int i = 0; i < NUMBER_FISHES; i++) {
