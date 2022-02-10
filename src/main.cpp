@@ -225,7 +225,7 @@ void drawSkybox()
 	glm::mat4 view = glm::mat4(1.0f);
 	glm::mat4 projection = glm::mat4(1.0f);
 	view = glm::mat4(glm::mat3(glm::lookAt(cameraPos, cameraPos + cameraDir, cameraSide)));
-	projection = glm::perspective(glm::radians(45.0f), (float)800 / 800, 0.1f, 100.0f);
+	projection = glm::perspective(glm::radians(45.0f), (float)600 / 600, 0.1f, 100.0f);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, glm::value_ptr(view));
 	glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
