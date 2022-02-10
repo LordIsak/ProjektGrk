@@ -321,8 +321,8 @@ void init()
 
 	std::string facesCubemap[6] =
 	{
-		curDir + "/skybox/right.jpg",
 		curDir + "/skybox/left.jpg",
+		curDir + "/skybox/right.jpg",
 		curDir + "/skybox/top.jpg",
 		curDir + "/skybox/bottom.jpg",
 		curDir + "/skybox/front.jpg",
