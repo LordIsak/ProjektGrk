@@ -36,12 +36,6 @@
     <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Skybox.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\stb_image.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\mesh.h">
@@ -68,9 +62,6 @@
     <ClInclude Include="src\objload.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Skybox.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\stb_image.h">
       <Filter>Source Files</Filter>
     </ClInclude>
@@ -86,12 +77,6 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="shaders\shader_color.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="shaders\shader_skybox.frag">
-      <Filter>Shader Files</Filter>
-    </None>
-    <None Include="shaders\shader_skybox.vert">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
