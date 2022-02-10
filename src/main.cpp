@@ -331,8 +331,6 @@ void renderScene()
 	drawObjectTexture(&chestModel, glm::translate(glm::vec3(-35.f, -86.f, -35.f)) * glm::scale(glm::vec3(1.f)), textureChest);
 	drawObjectTexture(&skeletonModel, glm::translate(glm::vec3(-35.f, -88.f, -30.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1, 0.6f, 1)) * glm::scale(glm::vec3(5.f)), textureSkeleton);
 
-	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
-
 	drawSkybox();
 	
 	glutSwapBuffers();
@@ -346,10 +344,9 @@ void init()
 	programColor = shaderLoader.CreateProgram("shaders/shader_color.vert", "shaders/shader_color.frag");
 	programTexture = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
 	mainTexture = shaderLoader.CreateProgram("shaders/shader_tex1.vert", "shaders/shader_tex1.frag");
-	
+	skyboxShader = shaderLoader.CreateProgram("shaders/skybox.vert", "shaders/skybox.frag");
 
 	submarineModel = obj::loadModelFromFile("models/submarine.obj");
-	backgroundModel = obj::loadModelFromFile("models/backg.obj");
 	fishModel = obj::loadModelFromFile("models/fish.obj");
 
 	fishModel_2 = obj::loadModelFromFile("models/fish2.obj");
@@ -363,7 +360,7 @@ void init()
 	skeletonModel = obj::loadModelFromFile("models/skeleton.obj");
 
 	textureSubmarine = Core::LoadTexture("textures/s2.png");
-	textureBackground = Core::LoadTexture("textures/water.png");
+	//textureBackground = Core::LoadTexture("textures/water.png");
 	textureFish = Core::LoadTexture("textures/fish.png");
 	textureFish_2 = Core::LoadTexture("textures/fish2.png");
 	textureFish_3 = Core::LoadTexture("textures/fish3.png");
