@@ -39,6 +39,9 @@ obj::Model chestModel;
 obj::Model skeletonModel;
 obj::Model phormiumModel;
 obj::Model pillarModel;
+obj::Model crabModel;
+obj::Model goldModel;
+
 
 glm::vec3 fishPosition[NUMBER_FISHES];
 float rot_tab[NUMBER_FISHES];
@@ -69,6 +72,8 @@ GLuint textureTurtle_2;
 //GLuint textureShark;
 GLuint textureChest;
 GLuint textureSkeleton;
+GLuint textureCrab;
+GLuint textureGold;
 //GLuint texturePhormium;
 
 
@@ -275,6 +280,12 @@ void renderScene()
 	drawObjectTexture(&chestModel, glm::translate(glm::vec3(-35.f, -86.f, -35.f)) * glm::scale(glm::vec3(1.f)), textureChest);
 	drawObjectTexture(&skeletonModel, glm::translate(glm::vec3(-35.f, -88.f, -30.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1, 0.6f, 1)) * glm::scale(glm::vec3(5.f)), textureSkeleton);
 
+	// krab
+	drawObjectTexture(&crabModel, glm::translate(glm::vec3(35.f, -91.f, 15.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1.f, 1.f, 1.f))  * glm::scale(glm::vec3(0.2f)), textureCrab);
+
+	// z³oto
+	drawObjectTexture(&goldModel, glm::translate(glm::vec3(-34.f, -88.f, -33.f)) * glm::scale(glm::vec3(0.8f)), textureGold);
+
 	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
 
 	
@@ -308,6 +319,8 @@ void init()
 	skeletonModel = obj::loadModelFromFile("models/skeleton.obj");
 	phormiumModel = obj::loadModelFromFile("models/phormium.obj");
 	pillarModel = obj::loadModelFromFile("models/pillar.obj");
+	crabModel = obj::loadModelFromFile("models/crab.obj");
+	goldModel = obj::loadModelFromFile("models/gold_bar.obj");
 
 	textureSubmarine = Core::LoadTexture("textures/s2.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
@@ -321,6 +334,8 @@ void init()
 	textureRock = Core::LoadTexture("textures/stone.png");
 	textureChest = Core::LoadTexture("textures/chest.png");
 	textureSkeleton = Core::LoadTexture("textures/skeleton.png");
+	textureCrab = Core::LoadTexture("textures/crab.png");
+	textureGold = Core::LoadTexture("textures/gold_bar.png");
 	//texturePhormium = Core::LoadTexture("textures/phormium.jpg");
 
 
