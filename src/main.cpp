@@ -14,7 +14,7 @@
 
 
 float frustumScale = 1.0f;
-//float loadingTime;
+
 static const int NUMBER_FISHES = 30;
 static const int NUMBER_ROCKS = 4;
 
@@ -198,20 +198,15 @@ void drawObjectTexture(obj::Model* model, glm::mat4 modelMatrix, GLuint textureI
 
 void renderScene()
 {
-	//Tworzenie macierzy perspektywy za pomoca createPerspectiveMatrix(), uzyskujemy obraz 3D
-	// Aktualizacja macierzy widoku i rzutowania. Macierze sa przechowywane w zmiennych globalnych, bo uzywa ich funkcja drawObject.
-	//  Jest to mozliwe dzieki temu, ze macierze widoku i rzutowania sa takie same dla wszystkich obiektow!)
 	cameraMatrix = createCameraMatrix();
 	perspectiveMatrix = Core::createPerspectiveMatrix(0.1, 1000, frustumScale);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-	
-	// Zmienna "time"  zawiera liczbe sekund od uruchomienia programu
-	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f; //-loadingTime;
+	float time = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 
-
+	// poczatkowa pozycja statku, przyczepienie do statku kamery, imitacja ruchu statku, rysowanie statku
 	glm::mat4 attachShip = glm::mat4_cast(inverse(rotation));
 
 	glm::mat4 shipInitialTransformation = glm::translate(glm::vec3(0, -0.25f, 0)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, 1, -1)) * glm::scale(glm::vec3(0.000115f));
@@ -239,6 +234,8 @@ void renderScene()
 	rotation[0][2] = -sin(time);
 	rotation[2][2] = cos(time);
 
+	// rysowanie:
+	// ryby
 	for (int i = 0; i < NUMBER_FISHES; i++) {
 		
 		if (i % 3 == 0) {
@@ -257,18 +254,22 @@ void renderScene()
 	}
 
 
+	// p³ywaj¹ce ¿ó³wie
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(3, 20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
 	drawObjectTexture(&turtleModel, glm::translate(glm::vec3(10.f, -20.f, 2)) * glm::translate(glm::vec3(sin(time) * 20.f, sin(time) * 0.5, 0)) * rotation * glm::scale(glm::vec3(0.03f)), textureTurtle);
 	
+	// statyczny ¿ó³w
 	drawObjectTexture(&turtleModel_2, glm::translate(glm::vec3(10.f, -97.f, 0)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.3f)), textureTurtle_2);
 	//drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, -50.f, 2)) * glm::translate(glm::vec3(0, sin(time) * 0.5, cos(time) * 45.f)) * rotation
 		// * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.09f)), textureShark);
-		
+	
+	// korale
 	drawObjectTexture(&coralModel, glm::translate(glm::vec3(3.f, -95.f, 28.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.1f)), textureCoral);
 	drawObjectTexture(&coralModel_2, glm::translate(glm::vec3(20.f, -96.f, -10.f)) * glm::rotate(glm::radians(0.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.9f)), textureCoral);
 	drawObjectTexture(&coralModel_3, glm::translate(glm::vec3(5.f, -93.f, 35.f)) * glm::rotate(glm::radians(175.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.0f)), textureCoral);
 	drawObjectTexture(&coralModel_2, glm::translate(glm::vec3(40.f, -90.f, 10.f)) * glm::rotate(glm::radians(0.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.0f)), textureCoral);
 	drawObjectTexture(&coralModel_4, glm::translate(glm::vec3(0.f, -90.f, -40.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.5f)), textureRock);
+	// ska³y
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(50.f, -80.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -85.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(30.f, -85.f, 20.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
@@ -276,8 +277,10 @@ void renderScene()
 	//drawObjectTexture(&phormiumModel, glm::translate(glm::vec3(25.f, -70.f, 0.f)) * glm::rotate(glm::radians(-110.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.5f)), textureCoral);
 	drawObjectTexture(&pillarModel, glm::translate(glm::vec3(15.f, -98.f, -15.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureCoral);
 
-
+	// skrzynia
 	drawObjectTexture(&chestModel, glm::translate(glm::vec3(-35.f, -86.f, -35.f)) * glm::scale(glm::vec3(1.f)), textureChest);
+	
+	// szkielet
 	drawObjectTexture(&skeletonModel, glm::translate(glm::vec3(-35.f, -88.f, -30.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1, 0.6f, 1)) * glm::scale(glm::vec3(5.f)), textureSkeleton);
 
 	// krab
@@ -286,6 +289,7 @@ void renderScene()
 	// z³oto
 	drawObjectTexture(&goldModel, glm::translate(glm::vec3(-34.f, -88.f, -33.f)) * glm::scale(glm::vec3(0.8f)), textureGold);
 
+	// Pseudo Skybox
 	drawObjectTextureMain(&backgroundModel, glm::translate(glm::vec3(0, 0, 0)) * glm::scale(glm::vec3(100.0f)), textureBackground);
 
 	
@@ -297,11 +301,12 @@ void init()
 {
 	srand(time(0));
 	glEnable(GL_DEPTH_TEST);
+	// wczytanie shaderów
 	programColor = shaderLoader.CreateProgram("shaders/shader_color.vert", "shaders/shader_color.frag");
 	programTexture = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
 	mainProgramTextur = shaderLoader.CreateProgram("shaders/shader_main.vert", "shaders/shader_main.frag");
 	
-
+	// wczytanie modeli
 	submarineModel = obj::loadModelFromFile("models/submarine.obj");
 	backgroundModel = obj::loadModelFromFile("models/backg.obj");
 	fishModel = obj::loadModelFromFile("models/fish.obj");
@@ -322,6 +327,7 @@ void init()
 	crabModel = obj::loadModelFromFile("models/crab.obj");
 	goldModel = obj::loadModelFromFile("models/gold_bar.obj");
 
+	// wczytanie tekstur
 	textureSubmarine = Core::LoadTexture("textures/s2.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
 	textureFish = Core::LoadTexture("textures/fish.png");
@@ -338,15 +344,16 @@ void init()
 	textureGold = Core::LoadTexture("textures/gold_bar.png");
 	//texturePhormium = Core::LoadTexture("textures/phormium.jpg");
 
-
+	// Losowa pozycja dla ryb uzyskana za pomoc¹ sphericalRand
 	for (int i = 0; i < NUMBER_FISHES; i++) {
 		fishPosition[i] = glm::sphericalRand(30.f);
 		//fishPosition[i] = glm::vec3(rand() % 20 - 10, rand() % 10 - 5, rand() % 20 - 10);
 		//rot_tab[i] = ((float)rand() / (float)(RAND_MAX)) * 2.0;
+
+		// Randomowe z pewnym zakresem zmienne, które pos³u¿¹ do wytycznia ruchu po okrêgu
 		rot_tab[i] = 0.05 + (rand() / (RAND_MAX / (1.0 - 0.05)));
 	}
 
-	//loadingTime = glutGet(GLUT_ELAPSED_TIME) / 1000.0f;
 }
 
 void shutdown()
