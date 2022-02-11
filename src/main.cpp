@@ -29,11 +29,16 @@ obj::Model backgroundModel;
 obj::Model fishModel, fishModel_2;
 obj::Model rockModel, rockModel_2;
 obj::Model coralModel;
+obj::Model coralModel_2;
+obj::Model coralModel_3;
+obj::Model coralModel_4;
 obj::Model turtleModel;
 obj::Model turtleModel_2;
 //obj::Model sharkModel;
 obj::Model chestModel;
 obj::Model skeletonModel;
+obj::Model phormiumModel;
+obj::Model pillarModel;
 
 glm::vec3 fishPosition[NUMBER_FISHES];
 float rot_tab[NUMBER_FISHES];
@@ -64,6 +69,7 @@ GLuint textureTurtle_2;
 //GLuint textureShark;
 GLuint textureChest;
 GLuint textureSkeleton;
+//GLuint texturePhormium;
 
 
 glm::quat rotation = glm::quat(1, 0, 0, 0);
@@ -253,11 +259,18 @@ void renderScene()
 	//drawObjectTexture(&sharkModel, glm::translate(glm::vec3(10.f, -50.f, 2)) * glm::translate(glm::vec3(0, sin(time) * 0.5, cos(time) * 45.f)) * rotation
 		// * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.09f)), textureShark);
 		
-	drawObjectTexture(&coralModel, glm::translate(glm::vec3(0.f, -100.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.1f)), textureCoral);
+	drawObjectTexture(&coralModel, glm::translate(glm::vec3(3.f, -95.f, 28.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.1f)), textureCoral);
+	drawObjectTexture(&coralModel_2, glm::translate(glm::vec3(20.f, -96.f, -10.f)) * glm::rotate(glm::radians(0.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.9f)), textureCoral);
+	drawObjectTexture(&coralModel_3, glm::translate(glm::vec3(5.f, -93.f, 35.f)) * glm::rotate(glm::radians(175.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.0f)), textureCoral);
+	drawObjectTexture(&coralModel_2, glm::translate(glm::vec3(40.f, -90.f, 10.f)) * glm::rotate(glm::radians(0.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.0f)), textureCoral);
+	drawObjectTexture(&coralModel_4, glm::translate(glm::vec3(0.f, -90.f, -40.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.5f)), textureRock);
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(50.f, -80.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -85.f, 0.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel, glm::translate(glm::vec3(30.f, -85.f, 20.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
 	drawObjectTexture(&rockModel_2, glm::translate(glm::vec3(-40.f, -83.f, -35.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureRock);
+	//drawObjectTexture(&phormiumModel, glm::translate(glm::vec3(25.f, -70.f, 0.f)) * glm::rotate(glm::radians(-110.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(0.5f)), textureCoral);
+	drawObjectTexture(&pillarModel, glm::translate(glm::vec3(15.f, -98.f, -15.f)) * glm::rotate(glm::radians(180.0f), glm::vec3(0, -1, -1)) * glm::scale(glm::vec3(1.5f)), textureCoral);
+
 
 	drawObjectTexture(&chestModel, glm::translate(glm::vec3(-35.f, -86.f, -35.f)) * glm::scale(glm::vec3(1.f)), textureChest);
 	drawObjectTexture(&skeletonModel, glm::translate(glm::vec3(-35.f, -88.f, -30.f)) * glm::rotate(glm::radians(-90.0f), glm::vec3(1, 0.6f, 1)) * glm::scale(glm::vec3(5.f)), textureSkeleton);
@@ -286,10 +299,15 @@ void init()
 	turtleModel_2 = obj::loadModelFromFile("models/turtle2.obj");
 	//sharkModel = obj::loadModelFromFile("models/shark.obj");
 	coralModel = obj::loadModelFromFile("models/coral.obj");
+	coralModel_2 = obj::loadModelFromFile("models/coral2.obj");
+	coralModel_3 = obj::loadModelFromFile("models/coral3.obj");
+	coralModel_4 = obj::loadModelFromFile("models/coral4.obj");
 	rockModel = obj::loadModelFromFile("models/stone.obj");
 	rockModel_2 = obj::loadModelFromFile("models/stone2.obj");
 	chestModel = obj::loadModelFromFile("models/chest.obj");
 	skeletonModel = obj::loadModelFromFile("models/skeleton.obj");
+	phormiumModel = obj::loadModelFromFile("models/phormium.obj");
+	pillarModel = obj::loadModelFromFile("models/pillar.obj");
 
 	textureSubmarine = Core::LoadTexture("textures/s2.png");
 	textureBackground = Core::LoadTexture("textures/water.png");
@@ -303,6 +321,7 @@ void init()
 	textureRock = Core::LoadTexture("textures/stone.png");
 	textureChest = Core::LoadTexture("textures/chest.png");
 	textureSkeleton = Core::LoadTexture("textures/skeleton.png");
+	//texturePhormium = Core::LoadTexture("textures/phormium.jpg");
 
 
 	for (int i = 0; i < NUMBER_FISHES; i++) {

@@ -1,2 +1,9 @@
-﻿Camera.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/INCREMENTAL:NO' specification
-  ProjektGrk.vcxproj -> C:\Users\Szogunek\Desktop\ProjektGrk\Debug\ProjektGrk.exe
+﻿  main.cpp
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(106,10): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(107,10): warning C4244: "=": konwersja z "int" do "float", możliwa utrata danych
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(112,16): warning C4305: "inicjowanie": obcięcie z "double" do "float"
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(200,75): warning C4305: "argument": obcięcie z "double" do "float"
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(287,12): warning C4244: "argument": konwersja z "time_t" do "unsigned int", możliwa utrata danych
+C:\Users\DELL\source\repos\ProjektGrkk\src\main.cpp(331,21): warning C4244: "=": konwersja z "double" do "float", możliwa utrata danych
+Camera.obj : warning LNK4075: zignorowano opcję „/EDITANDCONTINUE” z powodu określenia opcji „/INCREMENTAL:NO”
+  ProjektGrk.vcxproj -> C:\Users\DELL\Source\Repos\ProjektGrkk\Debug\ProjektGrk.exe
