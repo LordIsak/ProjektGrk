@@ -20,7 +20,7 @@ static const int NUMBER_ROCKS = 4;
 
 GLuint programColor;
 GLuint programTexture;
-GLuint mainTexture;
+GLuint mainProgramTextur;
 
 Core::Shader_Loader shaderLoader;
 
@@ -152,7 +152,7 @@ void drawObjectColor(obj::Model* model, glm::mat4 modelMatrix, glm::vec3 color)
 
 void drawObjectTextureMain(obj::Model* model, glm::mat4 modelMatrix, GLuint textureID)
 {
-	GLuint program = mainTexture;
+	GLuint program = mainProgramTextur;
 
 	// Aktywowanie shadera
 	glUseProgram(program);
@@ -299,7 +299,7 @@ void init()
 	glEnable(GL_DEPTH_TEST);
 	programColor = shaderLoader.CreateProgram("shaders/shader_color.vert", "shaders/shader_color.frag");
 	programTexture = shaderLoader.CreateProgram("shaders/shader_tex.vert", "shaders/shader_tex.frag");
-	mainTexture = shaderLoader.CreateProgram("shaders/shader_tex1.vert", "shaders/shader_tex1.frag");
+	mainProgramTextur = shaderLoader.CreateProgram("shaders/shader_main.vert", "shaders/shader_main.frag");
 	
 
 	submarineModel = obj::loadModelFromFile("models/submarine.obj");
@@ -354,7 +354,7 @@ void shutdown()
 	//Usuwanie za³adowanych shaderów z pamiêci
 	shaderLoader.DeleteProgram(programColor);
 	shaderLoader.DeleteProgram(programTexture);
-	shaderLoader.DeleteProgram(mainTexture);
+	shaderLoader.DeleteProgram(mainProgramTextur);
 }
 
 void idle()
